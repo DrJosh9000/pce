@@ -19,6 +19,7 @@
  * Public License for more details.                                          *
  *****************************************************************************/
 
+#include <stdio.h>
 
 #include "main.h"
 #include "macplus.h"
@@ -34,6 +35,15 @@
 #define MAC_HOOK_EXIT   2
 #define MAC_HOOK_INSERT 3
 #define MAC_HOOK_MARK   4
+
+// Yay it works!
+void print_hello_world() {
+	printf("Hello world\n");
+}
+
+void paperclip(unsigned drive) {
+	mac_sony_eject(&par_sim->sony, drive);
+}
 
 
 int mac_hook (void *ext, unsigned val)

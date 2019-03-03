@@ -983,7 +983,6 @@ static
 void mac_sony_ctl_eject (mac_sony_t *sony)
 {
 	unsigned      vref;
-	unsigned long vars;
 
 	vref = mac_sony_get_pblk (sony, ioVRefNum, 2);
 
@@ -991,12 +990,23 @@ void mac_sony_ctl_eject (mac_sony_t *sony)
 	mac_log_deb ("sony: control eject (drive=%u)\n", vref);
 #endif
 
-	if ((vref < 1) || (vref > SONY_DRIVES)) {
+	mac_sony_eject (sony, vref);
+}
+
+/* 
+ JOSH SPECIAL
+ Ejects the drive 
+*/
+void mac_sony_eject (mac_sony_t *sony, unsigned drive)
+{
+	unsigned long vars;
+
+	if ((drive < 1) || (drive > SONY_DRIVES)) {
 		mac_sony_return (sony, nsDrvErr, 0);
 		return;
 	}
 
-	vars = mac_sony_get_vars (sony, vref);
+	vars = mac_sony_get_vars (sony, drive);
 
 	mem_set_uint8 (sony->mem, vars + SONY_DISKINPLACE, 0x00);
 	mem_set_uint8 (sony->mem, vars + SONY_WPROT, 0x00);

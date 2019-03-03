@@ -58,9 +58,9 @@ server.listen(port);
 
 console.log(
   `
-opening http://127.0.0.1:${port}/ in your browser
+open http://127.0.0.1:${port}/ in your browser
 
 press CTRL-C to quit this program
 `
 );
-exec(`open http://127.0.0.1:${port}/`);
+//exec(`open http://127.0.0.1:${port}/`);

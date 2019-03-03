@@ -6,7 +6,7 @@ var loadingStatus = utils.loadingStatus(
   document.querySelector('.pcejs-loading-status')
 );
 
-macplus({
+var Module = macplus({
   arguments: ['-c', 'pce-config.cfg', '-r'],
   autoloadFiles: [
     'macplus-pcex.rom',
@@ -23,7 +23,12 @@ macplus({
 
   canvas: document.querySelector('.pcejs-canvas'),
 
-  monitorRunDependencies: function(remainingDependencies) {
+  monitorRunDependencies: (remainingDependencies) => {
     loadingStatus.update(remainingDependencies);
   },
+});
+
+document.getElementById('print-hello-world-link').addEventListener('click', Module._print_hello_world);
+document.getElementById('paperclip').addEventListener('click', () => {
+  Module._paperclip(1);
 });

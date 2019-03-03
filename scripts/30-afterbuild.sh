@@ -22,8 +22,8 @@ cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}" "${PCEJS_PREFIX}/bin/pce-${PCEJS_TA
 "${PCEJS_EMSDK_PATH}/emcc" "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.bc" \
   -o "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" \
   $PCEJS_EMFLAGS \
-  $PCEJS_MAKE_CFLAGS
-
+  $PCEJS_MAKE_CFLAGS \
+  -s 'EXPORTED_FUNCTIONS=["_main","_print_hello_world","_paperclip"]' 
 
 cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" "${PCEJS_PACKAGEDIR}/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}"
 
