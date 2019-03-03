@@ -42,7 +42,19 @@ void print_hello_world() {
 }
 
 void paperclip(unsigned drive) {
-	mac_sony_eject(&par_sim->sony, drive);
+	macplus_t *sim = par_sim;
+
+	sim->sony.d0 = e68_get_dreg32 (sim->cpu, 0);
+	sim->sony.a0 = e68_get_areg32 (sim->cpu, 0);
+	sim->sony.a1 = e68_get_areg32 (sim->cpu, 1);
+	sim->sony.pc = e68_get_pc (sim->cpu);
+
+	mac_sony_eject(&sim->sony, drive);
+	// Generate the same trap as though this were a CPU hook?
+	e68_set_dreg32 (sim->cpu, 0, sim->sony.d0);
+	e68_set_areg32 (sim->cpu, 0, sim->sony.a0);
+	e68_set_areg32 (sim->cpu, 1, sim->sony.a1);
+	e68_set_pc_prefetch (sim->cpu, sim->sony.pc);
 }
 
 
