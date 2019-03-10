@@ -34,16 +34,6 @@
 #define MAC_HOOK_INSERT 3
 #define MAC_HOOK_MARK   4
 
-/*
- paperlip force-ejects the disk from drive 1 in the current
- emulator.
- Note that a real Mac doesn't acknowledge anything is happening to the
- disk until it attempts to read, then usually throws an error.
-*/
-void paperclip() {
-	mac_set_msg(par_sim, "emu.disk.eject", "1");
-}
-
 
 int mac_hook (void *ext, unsigned val)
 {

@@ -512,3 +512,20 @@ int mac_set_msg (macplus_t *sim, const char *msg, const char *val)
 
 	return (1);
 }
+
+
+
+/*
+ paperlip force-ejects the disk from drive 1 in the current
+ emulator.
+ Note that a real Mac doesn't acknowledge anything is happening to the
+ disk until it attempts to read, then usually throws an error.
+*/
+void paperclip() {
+	mac_set_msg_emu_disk_eject(par_sim, NULL, "1");
+}
+
+void insert_kidpix_dsk() {
+	mac_set_msg_emu_disk_insert(par_sim, NULL, "1:kidpix.dsk");
+	mac_set_msg_mac_insert(par_sim, NULL, "1");
+}

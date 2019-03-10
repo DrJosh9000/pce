@@ -29,3 +29,4 @@ var Module = macplus({
 });
 
 document.getElementById('paperclip').addEventListener('click', Module._paperclip);
+document.getElementById('insert-kidpix').addEventListener('click', Module._insert_kidpix_dsk);
