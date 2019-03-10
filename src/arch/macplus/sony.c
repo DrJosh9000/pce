@@ -33,6 +33,7 @@
 
 #include <lib/log.h>
 
+#include <emscripten.h>
 
 #define MAC_HOOK_SONY        16
 #define MAC_HOOK_SONY_OPEN   (MAC_HOOK_SONY + 0)
@@ -995,6 +996,10 @@ void mac_sony_ctl_eject (mac_sony_t *sony)
 		mac_sony_return (sony, nsDrvErr, 0);
 		return;
 	}
+
+	EM_ASM(
+		Module.onDiskEject();
+	);
 
 	vars = mac_sony_get_vars (sony, vref);
 

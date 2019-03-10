@@ -523,9 +523,16 @@ int mac_set_msg (macplus_t *sim, const char *msg, const char *val)
 */
 void paperclip() {
 	mac_set_msg_emu_disk_eject(par_sim, NULL, "1");
+	// i.e.
+	//disk_t *dsk = dsks_get_disk (par_sim->dsks, 1);
+	//dsks_rmv_disk (par_sim->dsks, dsk);
+	//dsk_del (dsk);
+
 }
 
 void insert_kidpix_dsk() {
 	mac_set_msg_emu_disk_insert(par_sim, NULL, "1:kidpix.dsk");
+	// i.e. dsk_insert (par_sim->dsks, "1:kidpix.dsk", 1);
 	mac_set_msg_mac_insert(par_sim, NULL, "1");
+	// i.e. mac_sony_insert (&par_sim->sony, 1);
 }

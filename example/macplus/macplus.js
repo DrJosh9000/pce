@@ -23,6 +23,10 @@ var Module = macplus({
 
   canvas: document.querySelector('.pcejs-canvas'),
 
+  onDiskEject: () => {
+    console.log('disk is eject!');
+  },
+
   monitorRunDependencies: (remainingDependencies) => {
     loadingStatus.update(remainingDependencies);
   },
