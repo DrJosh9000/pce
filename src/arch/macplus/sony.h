@@ -76,8 +76,6 @@ void mac_sony_set_delay (mac_sony_t *sony, unsigned drive, unsigned delay);
 
 void mac_sony_insert (mac_sony_t *sony, unsigned drive);
 
-void mac_sony_eject (mac_sony_t *sony, unsigned drive);
-
 int mac_sony_check (mac_sony_t *sony);
 
 int mac_sony_hook (mac_sony_t *sony, unsigned val);

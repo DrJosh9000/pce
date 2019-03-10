@@ -23,7 +23,7 @@ cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}" "${PCEJS_PREFIX}/bin/pce-${PCEJS_TA
   -o "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" \
   $PCEJS_EMFLAGS \
   $PCEJS_MAKE_CFLAGS \
-  -s 'EXPORTED_FUNCTIONS=["_main","_print_hello_world","_paperclip"]' 
+  -s 'EXPORTED_FUNCTIONS=["_main","_paperclip"]' 
 
 cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" "${PCEJS_PACKAGEDIR}/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}"
 

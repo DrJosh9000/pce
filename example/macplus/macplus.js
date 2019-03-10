@@ -9,10 +9,10 @@ var loadingStatus = utils.loadingStatus(
 var Module = macplus({
   arguments: ['-c', 'pce-config.cfg', '-r'],
   autoloadFiles: [
+    'mac-classic-pram.dat',
     'macplus-pcex.rom',
-    'mac-plus.rom',
-    'hd1.qed',
-    'dc.dsk',
+    'mac-classic.rom',
+    'hd2.qed',
     'kidpix.dsk',
     'pce-config.cfg',
   ],
@@ -28,7 +28,4 @@ var Module = macplus({
   },
 });
 
-document.getElementById('print-hello-world-link').addEventListener('click', Module._print_hello_world);
-document.getElementById('paperclip').addEventListener('click', () => {
-  Module._paperclip(1);
-});
+document.getElementById('paperclip').addEventListener('click', Module._paperclip);
