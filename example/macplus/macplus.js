@@ -25,11 +25,7 @@ const Module = macplus({
 
   onDiskEject: () => {
     items.forEach(i => {
-      if (i.name == 'Paperclip') {
-        i.listItem.style.display = 'none';
-      } else {
-        i.listItem.style.display = '';
-      }
+      i.listItem.style.display = i.needsEmptyDrive ? '' : 'none';
     });
   },
 
@@ -45,11 +41,7 @@ const insertDisk = file => {
     return false;
   }
   items.forEach(i => {
-    if (i.name == 'Paperclip') {
-      i.listItem.style.display = '';
-    } else {
-      i.listItem.style.display = 'none';
-    }
+    i.listItem.style.display = i.needsEmptyDrive ? 'none' : '';
   });
   return true;
 }
@@ -73,14 +65,17 @@ items.push(
       e.preventDefault();
       Module._paperclip();
     },
+    needsEmptyDrive: false,
   },
   {
     name: 'KidPix',
     action: diskInserter('kidpix.dsk', '/kidpix.dsk'),
+    needsEmptyDrive: true,
   },
   {
     name: 'Dark Castle',
     action: diskInserter('dc.dsk', '/dc.dsk'),
+    needsEmptyDrive: true,
   }
 );
 
