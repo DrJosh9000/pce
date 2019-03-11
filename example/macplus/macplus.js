@@ -1,16 +1,48 @@
-var macplus = require('pcejs-macplus');
-var utils = require('pcejs-util');
+const macplus = require('pcejs-macplus');
+const utils = require('pcejs-util');
 
 // add a load progress bar. not required, but good ux
-var loadingStatus = utils.loadingStatus(
+const loadingStatus = utils.loadingStatus(
   document.querySelector('.pcejs-loading-status')
 );
 
-var paperclipLink = document.getElementById('paperclip');
-var insertKidPixLink = document.getElementById('insert-kidpix');
-var insertDarkCastleLink = document.getElementById('insert-darkcastle');
+const items = [
+  {
+    name: 'Paperclip',
+    image: 'paperclip',
+  },
+  {
+    name: 'KidPix',
+    image: 'kidpix',
+    file: 'kidpix.dsk',
+    url: '/kidpix.dsk',
+  },
+  {
+    name: 'Dark Castle',
+    image: 'dc',
+    file: 'dc.dsk',
+    url: '/dc.dsk',
+  },
+];
 
-var Module = macplus({
+const linksList = document.getElementById('links-list');
+
+items.forEach((i) => {
+  const li = document.createElement('li');
+  linksList.appendChild(li);
+  const a = document.createElement('a');
+  li.appendChild(a);
+  a.appendChild(document.createTextNode(i.name));
+  a.href = '#';
+  i.listItem = li;
+  i.link = a;
+  // Start with no disk inserted
+  if (i.name == 'Paperclip') {
+    li.style.display = 'none';
+  }
+});
+
+const Module = macplus({
   arguments: ['-c', 'pce-config.cfg', '-r'],
   autoloadFiles: [
     'mac-classic-pram.dat',
@@ -26,9 +58,13 @@ var Module = macplus({
   canvas: document.querySelector('.pcejs-canvas'),
 
   onDiskEject: () => {
-    paperclipLink.style.textDecoration = 'line-through';
-    insertKidPixLink.style.textDecoration = null;
-    insertDarkCastleLink.style.textDecoration = null;
+    items.forEach((i) => {
+      if (i.name == 'Paperclip') {
+        i.listItem.style.display = 'none';
+      } else {
+        i.listItem.style.display = '';
+      }
+    });
   },
 
   monitorRunDependencies: (remainingDependencies) => {
@@ -36,33 +72,37 @@ var Module = macplus({
   },
 });
 
-var insertDiskFn = Module.cwrap('insert_disk', 'number', ['string']);
+const insertDiskFn = Module.cwrap('insert_disk', 'number', ['string']);
 
 function insertDisk(file) {
   if (insertDiskFn(file) != 0) {
     return false;
   }
-  paperclipLink.style.textDecoration = null;
-  insertKidPixLink.style.textDecoration = 'line-through';
-  insertDarkCastleLink.style.textDecoration = 'line-through';
+  items.forEach((i) => {
+    if (i.name == 'Paperclip') {
+      i.listItem.style.display = '';
+    } else {
+      i.listItem.style.display = 'none';
+    }
+  });
   return true;
 }
 
-function diskInserter(file) {
-  return (e) => {
-    e.preventDefault();
-    if (insertDisk(file)) {
-      return;
-    }
-    Module.FS_createPreloadedFile('/', file, file, true, true, () => {
-      insertDisk(file);
+items.forEach((i) => {
+  if (i.name == 'Paperclip') {
+    i.link.addEventListener('click', (e) => {
+      e.preventDefault();
+      Module._paperclip();
     });
-  };
-}
-
-paperclipLink.addEventListener('click', (e) => {
-  e.preventDefault();
-  Module._paperclip();
+  } else {
+    i.link.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (insertDisk(i.file)) {
+        return;
+      }
+      Module.FS_createPreloadedFile('/', i.file, i.url, true, true, () => {
+        insertDisk(i.file);
+      });
+    });
+  }
 });
-insertKidPixLink.addEventListener('click', diskInserter('kidpix.dsk'));
-insertDarkCastleLink.addEventListener('click', diskInserter('dc.dsk'));
