@@ -40,7 +40,7 @@ const Module = macplus({
 
 const insertDiskFn = Module.cwrap('insert_disk', 'number', ['string']);
 
-function insertDisk(file) {
+const insertDisk = (file) => {
   if (insertDiskFn(file) != 0) {
     return false;
   }
@@ -54,7 +54,7 @@ function insertDisk(file) {
   return true;
 }
 
-function diskInserter(file, url) {
+const diskInserter = (file, url) => {
   return (e) => {
     e.preventDefault();
     if (insertDisk(file)) {
