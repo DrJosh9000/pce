@@ -1,6 +1,6 @@
 # PCE.js (DrJosh9000-flavoured)
 
-You are looking at a fork of [James Friend](https://jamesfriend.com.au/)'s port of Hampa Hug's excellent [PCE](http://www.hampa.ch/pce/) emulator. 
+You are looking at a fork of [James Friend](https://jamesfriend.com.au/)'s excellent port of Hampa Hug's excellent [PCE](http://www.hampa.ch/pce/) emulator. 
 
 This fork exists so I can tweak PCE and PCE.js for the purposes of improving [HyperCard Adventures](https://hypercardadventures.com), and contribute said tweaks back to the world.
 
