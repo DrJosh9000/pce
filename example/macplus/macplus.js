@@ -6,15 +6,16 @@ var loadingStatus = utils.loadingStatus(
   document.querySelector('.pcejs-loading-status')
 );
 
+var paperclipLink = document.getElementById('paperclip');
+var insertKidPixLink = document.getElementById('insert-kidpix');
+var insertDarkCastleLink = document.getElementById('insert-darkcastle');
+
 var Module = macplus({
   arguments: ['-c', 'pce-config.cfg', '-r'],
   autoloadFiles: [
     'mac-classic-pram.dat',
     'macplus-pcex.rom',
     'mac-classic.rom',
-    //'hd2.qed',
-    //'dc.dsk',
-    //'kidpix.dsk',
     'pce-config.cfg',
   ],
 
@@ -25,7 +26,9 @@ var Module = macplus({
   canvas: document.querySelector('.pcejs-canvas'),
 
   onDiskEject: () => {
-    console.log('disk is eject!');
+    paperclipLink.style.textDecoration = 'line-through';
+    insertKidPixLink.style.textDecoration = null;
+    insertDarkCastleLink.style.textDecoration = null;
   },
 
   monitorRunDependencies: (remainingDependencies) => {
@@ -33,20 +36,37 @@ var Module = macplus({
   },
 });
 
-var insertDisk = Module.cwrap('insert_disk', 'number', ['string']);
+var insertDiskFn = Module.cwrap('insert_disk', 'number', ['string']);
+
+function insertDisk(file) {
+  if (insertDiskFn(file) != 0) {
+    return false;
+  }
+  paperclipLink.style.textDecoration = null;
+  insertKidPixLink.style.textDecoration = 'line-through';
+  insertDarkCastleLink.style.textDecoration = 'line-through';
+  return true;
+}
 
 function diskInserter(file) {
   return (e) => {
     e.preventDefault();
-    if (insertDisk(file) == 0) {
+    if (insertDisk(file)) {
       return;
     }
     Module.FS_createPreloadedFile('/', file, file, true, true, () => {
       insertDisk(file);
     });
-  }
+  };
 }
 
-document.getElementById('paperclip').addEventListener('click', Module._paperclip);
-document.getElementById('insert-kidpix').addEventListener('click', diskInserter('kidpix.dsk'));
-document.getElementById('insert-darkcastle').addEventListener('click', diskInserter('dc.dsk'));
+paperclipLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  Module._paperclip();
+  
+  paperclipLink.style.textDecoration = 'line-through';
+  insertKidPixLink.style.textDecoration = null;
+  insertDarkCastleLink.style.textDecoration = null;
+});
+insertKidPixLink.addEventListener('click', diskInserter('kidpix.dsk'));
+insertDarkCastleLink.addEventListener('click', diskInserter('dc.dsk'));
