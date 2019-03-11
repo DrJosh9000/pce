@@ -530,9 +530,16 @@ void paperclip() {
 
 }
 
-void insert_kidpix_dsk() {
-	mac_set_msg_emu_disk_insert(par_sim, NULL, "1:kidpix.dsk");
-	// i.e. dsk_insert (par_sim->dsks, "1:kidpix.dsk", 1);
+/* 
+Insert a disk given by the specifier. <drive>:<file>
+*/
+void insert_disk(const char* val) {
+	char *buf = calloc(strlen(val)+3, 1);
+	strcpy(buf, "1:");
+	strcpy(buf+2, val);
+	mac_set_msg_emu_disk_insert(par_sim, NULL, buf);
+	free(buf);
+	// i.e. dsk_insert (par_sim->dsks, val, 1);
 	mac_set_msg_mac_insert(par_sim, NULL, "1");
 	// i.e. mac_sony_insert (&par_sim->sony, 1);
 }

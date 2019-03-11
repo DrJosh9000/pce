@@ -23,7 +23,8 @@ cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}" "${PCEJS_PREFIX}/bin/pce-${PCEJS_TA
   -o "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" \
   $PCEJS_EMFLAGS \
   $PCEJS_MAKE_CFLAGS \
-  -s 'EXPORTED_FUNCTIONS=["_main","_paperclip","_insert_kidpix_dsk"]' 
+  -s EXPORTED_FUNCTIONS='["_main","_paperclip","_insert_disk"]' \
+  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]'
 
 cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" "${PCEJS_PACKAGEDIR}/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}"
 

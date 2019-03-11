@@ -12,7 +12,8 @@ var Module = macplus({
     'mac-classic-pram.dat',
     'macplus-pcex.rom',
     'mac-classic.rom',
-    'hd2.qed',
+    //'hd2.qed',
+    'dc.dsk',
     'kidpix.dsk',
     'pce-config.cfg',
   ],
@@ -32,5 +33,14 @@ var Module = macplus({
   },
 });
 
+var insertDisk = Module.cwrap('insert_disk', null, ['string']);
+
 document.getElementById('paperclip').addEventListener('click', Module._paperclip);
-document.getElementById('insert-kidpix').addEventListener('click', Module._insert_kidpix_dsk);
+document.getElementById('insert-kidpix').addEventListener('click', (e) => {
+  e.preventDefault();
+  insertDisk('kidpix.dsk');
+});
+document.getElementById('insert-darkcastle').addEventListener('click', (e) => {
+  e.preventDefault();
+  insertDisk('dc.dsk');
+})
