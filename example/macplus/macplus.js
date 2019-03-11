@@ -24,7 +24,7 @@ const Module = macplus({
   canvas: document.querySelector('.pcejs-canvas'),
 
   onDiskEject: () => {
-    items.forEach((i) => {
+    items.forEach(i => {
       if (i.name == 'Paperclip') {
         i.listItem.style.display = 'none';
       } else {
@@ -33,18 +33,18 @@ const Module = macplus({
     });
   },
 
-  monitorRunDependencies: (remainingDependencies) => {
+  monitorRunDependencies: remainingDependencies => {
     loadingStatus.update(remainingDependencies);
   },
 });
 
 const insertDiskFn = Module.cwrap('insert_disk', 'number', ['string']);
 
-const insertDisk = (file) => {
+const insertDisk = file => {
   if (insertDiskFn(file) != 0) {
     return false;
   }
-  items.forEach((i) => {
+  items.forEach(i => {
     if (i.name == 'Paperclip') {
       i.listItem.style.display = '';
     } else {
@@ -86,7 +86,7 @@ items.push(
 
 const linksList = document.getElementById('links-list');
 
-items.forEach((i) => {
+items.forEach(i => {
   const li = document.createElement('li');
   linksList.appendChild(li);
   const a = document.createElement('a');
