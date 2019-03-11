@@ -33,6 +33,8 @@
 #include <lib/msg.h>
 #include <lib/sysdep.h>
 
+#include <emscripten.h>
+
 
 extern monitor_t par_mon;
 
@@ -527,7 +529,9 @@ void paperclip() {
 	//disk_t *dsk = dsks_get_disk (par_sim->dsks, 1);
 	//dsks_rmv_disk (par_sim->dsks, dsk);
 	//dsk_del (dsk);
-
+	EM_ASM(
+		Module.onDiskEject();
+	);
 }
 
 /* 

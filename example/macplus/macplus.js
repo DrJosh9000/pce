@@ -63,10 +63,6 @@ function diskInserter(file) {
 paperclipLink.addEventListener('click', (e) => {
   e.preventDefault();
   Module._paperclip();
-  
-  paperclipLink.style.textDecoration = 'line-through';
-  insertKidPixLink.style.textDecoration = null;
-  insertDarkCastleLink.style.textDecoration = null;
 });
 insertKidPixLink.addEventListener('click', diskInserter('kidpix.dsk'));
 insertDarkCastleLink.addEventListener('click', diskInserter('dc.dsk'));
