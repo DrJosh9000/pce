@@ -6,41 +6,7 @@ const loadingStatus = utils.loadingStatus(
   document.querySelector('.pcejs-loading-status')
 );
 
-const items = [
-  {
-    name: 'Paperclip',
-    image: 'paperclip',
-  },
-  {
-    name: 'KidPix',
-    image: 'kidpix',
-    file: 'kidpix.dsk',
-    url: '/kidpix.dsk',
-  },
-  {
-    name: 'Dark Castle',
-    image: 'dc',
-    file: 'dc.dsk',
-    url: '/dc.dsk',
-  },
-];
-
-const linksList = document.getElementById('links-list');
-
-items.forEach((i) => {
-  const li = document.createElement('li');
-  linksList.appendChild(li);
-  const a = document.createElement('a');
-  li.appendChild(a);
-  a.appendChild(document.createTextNode(i.name));
-  a.href = '#';
-  i.listItem = li;
-  i.link = a;
-  // Start with no disk inserted
-  if (i.name == 'Paperclip') {
-    li.style.display = 'none';
-  }
-});
+const items = [];
 
 const Module = macplus({
   arguments: ['-c', 'pce-config.cfg', '-r'],
@@ -88,21 +54,46 @@ function insertDisk(file) {
   return true;
 }
 
-items.forEach((i) => {
-  if (i.name == 'Paperclip') {
-    i.link.addEventListener('click', (e) => {
+function diskInserter(file, url) {
+  return (e) => {
+    e.preventDefault();
+    if (insertDisk(file)) {
+      return;
+    }
+    Module.FS_createPreloadedFile('/', file, url, true, true, () => {
+      insertDisk(file);
+    });
+  };
+}
+
+items.push(
+  {
+    name: 'Paperclip',
+    action: (e) => {
       e.preventDefault();
       Module._paperclip();
-    });
-  } else {
-    i.link.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (insertDisk(i.file)) {
-        return;
-      }
-      Module.FS_createPreloadedFile('/', i.file, i.url, true, true, () => {
-        insertDisk(i.file);
-      });
-    });
+    },
+  },
+  {
+    name: 'KidPix',
+    action: diskInserter('kidpix.dsk', '/kidpix.dsk'),
+  },
+  {
+    name: 'Dark Castle',
+    action: diskInserter('dc.dsk', '/dc.dsk'),
   }
+);
+
+const linksList = document.getElementById('links-list');
+
+items.forEach((i) => {
+  const li = document.createElement('li');
+  linksList.appendChild(li);
+  const a = document.createElement('a');
+  li.appendChild(a);
+  a.appendChild(document.createTextNode(i.name));
+  a.href = '#';
+  a.addEventListener('click', i.action);
+  i.listItem = li;
+  i.link = a;
 });
