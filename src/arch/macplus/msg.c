@@ -532,14 +532,18 @@ void paperclip() {
 
 /* 
 Insert a disk given by the specifier. <drive>:<file>
+
+TODO: replace this with a memory-passing solution - load a disk_t
+up directly with some data from an AJAX request.
 */
-void insert_disk(const char* val) {
+int insert_disk(const char* val) {
 	char *buf = calloc(strlen(val)+3, 1);
 	strcpy(buf, "1:");
 	strcpy(buf+2, val);
-	mac_set_msg_emu_disk_insert(par_sim, NULL, buf);
+	if (mac_set_msg_emu_disk_insert(par_sim, NULL, buf)) {
+		free(buf);
+		return 1;
+	}
 	free(buf);
-	// i.e. dsk_insert (par_sim->dsks, val, 1);
-	mac_set_msg_mac_insert(par_sim, NULL, "1");
-	// i.e. mac_sony_insert (&par_sim->sony, 1);
+	return mac_set_msg_mac_insert(par_sim, NULL, "1");
 }

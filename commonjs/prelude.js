@@ -16,31 +16,29 @@ function pathGetFilename(path) {
 }
 
 function addAutoloader(module) {
-  var loadDatafiles = function() {
-    module.autoloadFiles.forEach(function(filepath) {
+  if (!module.autoloadFiles) {
+    return;
+  }
+  module.preRun = module.preRun || [];
+  module.preRun.unshift(() => {
+    module.autoloadFiles.forEach((filepath) => {
       module.FS_createPreloadedFile('/', pathGetFilename(filepath), filepath, true, true);
     });
-  };
-
-  if (module.autoloadFiles) {
-    module.preRun = module.preRun || [];
-    module.preRun.unshift(loadDatafiles);
-  }
-
-  return module;
+  });
 }
 
 function addCustomAsyncInit(module) {
-  if (module.asyncInit) {
-    module.preRun = module.preRun || [];
-    module.preRun.push(function waitForCustomAsyncInit() {
-      module.addRunDependency('pcejsAsyncInit');
-
-      module.asyncInit(module, function asyncInitCallback() {
-        module.removeRunDependency('pcejsAsyncInit');
-      });
-    });
+  if (!module.asyncInit) {
+    return;
   }
+  module.preRun = module.preRun || [];
+  module.preRun.push(() => {
+    module.addRunDependency('pcejsAsyncInit');
+
+    module.asyncInit(module, () => {
+      module.removeRunDependency('pcejsAsyncInit');
+    });
+  });
 }
 
 // inject extra behaviours

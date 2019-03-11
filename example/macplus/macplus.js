@@ -13,8 +13,8 @@ var Module = macplus({
     'macplus-pcex.rom',
     'mac-classic.rom',
     //'hd2.qed',
-    'dc.dsk',
-    'kidpix.dsk',
+    //'dc.dsk',
+    //'kidpix.dsk',
     'pce-config.cfg',
   ],
 
@@ -33,14 +33,20 @@ var Module = macplus({
   },
 });
 
-var insertDisk = Module.cwrap('insert_disk', null, ['string']);
+var insertDisk = Module.cwrap('insert_disk', 'number', ['string']);
+
+function diskInserter(file) {
+  return (e) => {
+    e.preventDefault();
+    if (insertDisk(file) == 0) {
+      return;
+    }
+    Module.FS_createPreloadedFile('/', file, file, true, true, () => {
+      insertDisk(file);
+    });
+  }
+}
 
 document.getElementById('paperclip').addEventListener('click', Module._paperclip);
-document.getElementById('insert-kidpix').addEventListener('click', (e) => {
-  e.preventDefault();
-  insertDisk('kidpix.dsk');
-});
-document.getElementById('insert-darkcastle').addEventListener('click', (e) => {
-  e.preventDefault();
-  insertDisk('dc.dsk');
-})
+document.getElementById('insert-kidpix').addEventListener('click', diskInserter('kidpix.dsk'));
+document.getElementById('insert-darkcastle').addEventListener('click', diskInserter('dc.dsk'));
