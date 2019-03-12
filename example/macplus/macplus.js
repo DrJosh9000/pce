@@ -47,7 +47,7 @@ const insertDisk = file => {
 }
 
 const diskInserter = (file, url) => {
-  return (e) => {
+  return e => {
     e.preventDefault();
     if (insertDisk(file)) {
       return;
@@ -61,7 +61,7 @@ const diskInserter = (file, url) => {
 items.push(
   {
     name: 'Paperclip',
-    action: (e) => {
+    action: e => {
       e.preventDefault();
       Module._paperclip();
     },
@@ -75,6 +75,11 @@ items.push(
   {
     name: 'Dark Castle',
     action: diskInserter('dc.dsk', '/dc.dsk'),
+    needsEmptyDrive: true,
+  },
+  {
+    name: '800k',
+    action: diskInserter('800K.dsk', '/800K.dsk'),
     needsEmptyDrive: true,
   }
 );

@@ -39,6 +39,8 @@
 #include "psi-img-td0.h"
 #include "psi-img-xdf.h"
 
+#include <lib/log.h>
+
 
 static
 const char *psi_get_ext (const char *fname)
@@ -65,51 +67,67 @@ unsigned psi_guess_type (const char *fname)
 	ext = psi_get_ext (fname);
 
 	if (strcasecmp (ext, ".ana") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type anadisk\n");
 		return (PSI_FORMAT_ANADISK);
 	}
 	else if (strcasecmp (ext, ".cp2") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type cp2\n");
 		return (PSI_FORMAT_CP2);
 	}
 	else if (strcasecmp (ext, ".image") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type dc42\n");
 		return (PSI_FORMAT_DC42);
 	}
 	else if (strcasecmp (ext, ".ima") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type ima\n");
 		return (PSI_FORMAT_RAW);
 	}
 	else if (strcasecmp (ext, ".imd") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type imd\n");
 		return (PSI_FORMAT_IMD);
 	}
 	else if (strcasecmp (ext, ".img") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type raw .img\n");
 		return (PSI_FORMAT_RAW);
 	}
 	else if (strcasecmp (ext, ".msa") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type msa\n");
 		return (PSI_FORMAT_MSA);
 	}
 	else if (strcasecmp (ext, ".pfdc") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type pfdc\n");
 		return (PSI_FORMAT_PFDC);
 	}
 	else if (strcasecmp (ext, ".psi") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type psi\n");
 		return (PSI_FORMAT_PSI);
 	}
 	else if (strcasecmp (ext, ".raw") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type raw\n");
 		return (PSI_FORMAT_RAW);
 	}
 	else if (strcasecmp (ext, ".st") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type st\n");
 		return (PSI_FORMAT_ST);
 	}
 	else if (strcasecmp (ext, ".stx") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type stx\n");
 		return (PSI_FORMAT_STX);
 	}
 	else if (strcasecmp (ext, ".tc") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type tc\n");
 		return (PSI_FORMAT_TC);
 	}
 	else if (strcasecmp (ext, ".td0") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type td0\n");
 		return (PSI_FORMAT_TD0);
 	}
 	else if (strcasecmp (ext, ".xdf") == 0) {
+		pce_log (MSG_INF, "psi_guess_type: psi type xdf\n");
 		return (PSI_FORMAT_XDF);
 	}
 
+	pce_log (MSG_INF, "psi_guess_type: psi type psi\n");
 	return (PSI_FORMAT_PSI);
 }
 
@@ -271,37 +289,46 @@ int psi_save (const char *fname, const psi_img_t *img, unsigned type)
 unsigned psi_probe_fp (FILE *fp)
 {
 	if (psi_probe_psi_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format psi\n");
 		return (PSI_FORMAT_PSI);
 	}
 
 	if (psi_probe_pfdc_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format pfdc\n");
 		return (PSI_FORMAT_PFDC);
 	}
 
 	if (psi_probe_td0_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format td0\n");
 		return (PSI_FORMAT_TD0);
 	}
 
 	if (psi_probe_imd_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format imd\n");
 		return (PSI_FORMAT_IMD);
 	}
 
 	if (psi_probe_dc42_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format dc42\n");
 		return (PSI_FORMAT_DC42);
 	}
 
 	if (psi_probe_msa_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format msa\n");
 		return (PSI_FORMAT_MSA);
 	}
 
 	if (psi_probe_stx_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format stx\n");
 		return (PSI_FORMAT_STX);
 	}
 
 	if (psi_probe_raw_fp (fp)) {
+		pce_log (MSG_INF, "psi_probe_fp: psi format raw\n");
 		return (PSI_FORMAT_RAW);
 	}
 
+	pce_log (MSG_INF, "psi_probe_fp: psi format none\n");
 	return (PSI_FORMAT_NONE);
 }
 

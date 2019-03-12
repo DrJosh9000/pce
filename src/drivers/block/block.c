@@ -33,6 +33,7 @@
 #include <limits.h>
 
 #include <drivers/psi/psi-img.h>
+#include <lib/log.h>
 
 
 uint16_t dsk_get_uint16_be (const void *buf, unsigned i)
@@ -715,18 +716,22 @@ int dsk_guess_geometry_size (disk_t *dsk)
 int dsk_guess_geometry (disk_t *dsk)
 {
 	if (dsk_guess_geometry_mbr (dsk) == 0) {
+		pce_log (MSG_INF, "dsk_guess_geometry: guessed geometry mbr\n");
 		return (0);
 	}
 
 	if (dsk_guess_geometry_dos (dsk) == 0) {
+		pce_log (MSG_INF, "dsk_guess_geometry: guessed geometry dos\n");
 		return (0);
 	}
 
 	if (dsk_guess_geometry_sun (dsk) == 0) {
+		pce_log (MSG_INF, "dsk_guess_geometry: guessed geometry sun\n");
 		return (0);
 	}
 
 	if (dsk_guess_geometry_size (dsk) == 0) {
+		pce_log (MSG_INF, "dsk_guess_geometry: guessed geometry size\n");
 		return (0);
 	}
 
@@ -741,20 +746,24 @@ disk_t *dsk_auto_open (const char *fname, uint64_t ofs, int ro)
 	unsigned type;
 
 	if (dsk_pce_probe (fname)) {
+		pce_log (MSG_INF, "dsk_auto_open: guessed pce format\n");
 		return (dsk_pce_open (fname, ro));
 	}
 
 	if (dsk_qed_probe (fname)) {
+		pce_log (MSG_INF, "dsk_auto_open: using dsk_qed_open\n");
 		return (dsk_qed_open (fname, ro));
 	}
 
 	if (dsk_dosemu_probe (fname)) {
+		pce_log (MSG_INF, "dsk_auto_open: using dsk_dosemu_open\n");
 		return (dsk_dosemu_open (fname, ro));
 	}
 
 	type = dsk_psi_probe (fname);
 
 	if (type != PSI_FORMAT_NONE) {
+		pce_log (MSG_INF, "dsk_auto_open: dsk_psi_probe != NONE, using dsk_psi_open\n");
 		return (dsk_psi_open (fname, type, ro));
 	}
 
@@ -762,10 +771,12 @@ disk_t *dsk_auto_open (const char *fname, uint64_t ofs, int ro)
 
 	if (type != PSI_FORMAT_NONE) {
 		if (type != PSI_FORMAT_RAW) {
+			pce_log (MSG_INF, "dsk_auto_open: psi_guess_type != NONE or RAW, using dsk_psi_open\n");
 			return (dsk_psi_open (fname, type, ro));
 		}
 	}
 
+	pce_log (MSG_INF, "dsk_auto_open: using dsk_img_open\n");
 	return (dsk_img_open (fname, ofs, ro));
 }
 
