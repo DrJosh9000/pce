@@ -7,14 +7,8 @@ copy_if_present() {
   fi
 }
 
-PCEJS_ARCH=$1
-if [[ -z $PCEJS_ARCH ]]
-  then
-    echo "missing pcejs arch argument [macplus ibmpc atarist]" >&2
-    exit 1
-fi
-
-PCEJS_MODE=${2:-""}
+PCEJS_ARCH="macplus"
+PCEJS_MODE=${1:-""}
 
 
 PCEJS_DIR=$(git rev-parse --show-toplevel)
@@ -38,7 +32,7 @@ if ! (ls "${PCEJS_ARCH_EXAMPLE_DIR}"/*.rom >/dev/null 2>&1); then
   exit 1
 fi
 
-"$PCEJS_ARCH_MODULE_DIR"/prepublish.sh $1
+"$PCEJS_ARCH_MODULE_DIR"/prepublish.sh "${PCEJS_ARCH}"
 
 NODE_PATH="$PCEJS_MODULES_DIR:$PCEJS_DIR/node_modules" \
   "$PCEJS_NODE_BIN_DIR/browserify" "$PCEJS_ARCH_EXAMPLE_DIR/$PCEJS_ARCH.js" \
