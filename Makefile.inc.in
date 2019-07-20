@@ -117,8 +117,6 @@ include $(srcdir)/src/cpu/Makefile.inc
 include $(srcdir)/src/cpu/e68000/Makefile.inc
 include $(srcdir)/src/chipset/82xx/Makefile.inc
 include $(srcdir)/src/chipset/Makefile.inc
-include $(srcdir)/src/devices/clock/Makefile.inc
-include $(srcdir)/src/devices/video/Makefile.inc
 include $(srcdir)/src/devices/Makefile.inc
 include $(srcdir)/src/libini/Makefile.inc
 include $(srcdir)/src/lib/Makefile.inc
