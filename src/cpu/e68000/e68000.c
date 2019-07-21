@@ -784,29 +784,31 @@ void e68_execute (e68000_t *c)
 	if (c->int_nmi) {
 		e68_exception_avec (c, 7);
 		c->int_nmi = 0;
+		return;
 	}
-	else if (c->int_ipl > 0) {
-		unsigned iml, ipl, vec;
-
-		iml = e68_get_iml (c);
-		ipl = c->int_ipl;
-
-		if (iml < ipl) {
-			if (c->inta != NULL) {
-				vec = c->inta (c->inta_ext, ipl);
-			}
-			else {
-				vec = -1;
-			}
-
-			if (vec < 256) {
-				e68_exception_intr (c, ipl, vec);
-			}
-			else {
-				e68_exception_avec (c, ipl);
-			}
-		}
+	if (c->int_ipl == 0) {
+		return;
 	}
+	unsigned iml, ipl, vec;
+
+	iml = e68_get_iml (c);
+	ipl = c->int_ipl;
+
+	if (iml >= ipl) {
+		return;
+	}
+	if (c->inta != NULL) {
+		vec = c->inta (c->inta_ext, ipl);
+	} else {
+		vec = -1;
+	}
+
+	if (vec < 256) {
+		e68_exception_intr (c, ipl, vec);
+	} else {
+		e68_exception_avec (c, ipl);
+	}
+
 }
 
 void e68_clock (e68000_t *c, unsigned long n)
