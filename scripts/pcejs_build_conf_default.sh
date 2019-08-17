@@ -1,6 +1,6 @@
 PCEJS_conf_target="macplus"
 PCEJS_conf_emscripten="yes"
-PCEJS_conf_asmjs="yes"
+PCEJS_conf_asmjs="no"
 PCEJS_conf_wasm="yes"
 PCEJS_conf_optlvl="O3"
 PCEJS_conf_dbglvl=""
