@@ -23,8 +23,8 @@ cp "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}" "${PCEJS_PREFIX}/bin/pce-${PCEJS_TA
   -o "${PCEJS_PREFIX}/bin/pce-${PCEJS_TARGET}.${PCEJS_OUTPUT_FORMAT}" \
   $PCEJS_EMFLAGS \
   $PCEJS_MAKE_CFLAGS \
-  -s EXPORTED_FUNCTIONS='["_main","_paperclip","_insert_disk"]' \
-  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' \
+  -s EXPORTED_FUNCTIONS='["_main","_paperclip","_insert_disk","_commit_disk"]' \
+  -s EXTRA_EXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "FS"]' \
   -s EXPORT_ES6=1 \
   -s MODULARIZE=1
 

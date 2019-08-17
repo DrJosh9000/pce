@@ -535,19 +535,23 @@ void paperclip() {
 }
 
 /* 
-Insert a disk given by the specifier. <drive>:<file>
-
-TODO: replace this with a memory-passing solution - load a disk_t
-up directly with some data from an AJAX request.
+Insert a disk image file.
 */
-int insert_disk(const char* val) {
-	char *buf = calloc(strlen(val)+3, 1);
+int insert_disk(const char* filename) {
+	char *buf = calloc(strlen(filename)+3, 1);
 	strcpy(buf, "1:");
-	strcpy(buf+2, val);
+	strcpy(buf+2, filename);
 	if (mac_set_msg_emu_disk_insert(par_sim, NULL, buf)) {
 		free(buf);
 		return 1;
 	}
 	free(buf);
 	return mac_set_msg_mac_insert(par_sim, NULL, "1");
+}
+
+/*
+Commit the current disk state back to the file.
+*/
+int commit_disk() {
+	return mac_set_msg_emu_disk_commit(par_sim, NULL, "1");
 }
